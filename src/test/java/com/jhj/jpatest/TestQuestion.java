@@ -99,13 +99,21 @@ public class TestQuestion {
 //		// SELECT * FROM jpaquestiontbl WHERE qnum =1 AND qtitle='홍길동'
 //		Questiontbl qOptional = questionRepository.findByQnumAndQtitle(1L, "홍길동");
 		
-		// 제목이 정확히 일치하는 질문글 조회
-		List<Questiontbl> questions = questionRepository.findAllByQtitle("홍길동");
-		for(Questiontbl question : questions ) {;
+//		// 제목이 정확히 일치하는 질문글 조회
+//		List<Questiontbl> questions = questionRepository.findAllByQtitle("홍길동");
+//		for(Questiontbl question : questions ) {;
+//			System.out.println(question.getQtitle());
+//			System.out.println("-------------------------");
+//		}
+		
+		
+		// 질문 제목에 특정 문자가 들어있는 게시글 조회 -> LIKE
+		List<Questiontbl> likeQuestions = questionRepository.findAllByQtitleLikeOrderByQdateDesc("%질문%");
+		for(Questiontbl question : likeQuestions ) {;
+			System.out.println(question.getQnum());
 			System.out.println(question.getQtitle());
 			System.out.println("-------------------------");
 		}
-		
 		
 	}
 
