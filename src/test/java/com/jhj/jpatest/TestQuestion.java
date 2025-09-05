@@ -107,13 +107,20 @@ public class TestQuestion {
 //		}
 		
 		
-		// 질문 제목에 특정 문자가 들어있는 게시글 조회 -> LIKE
-		List<Questiontbl> likeQuestions = questionRepository.findAllByQtitleLikeOrderByQdateDesc("%질문%");
-		for(Questiontbl question : likeQuestions ) {;
-			System.out.println(question.getQnum());
-			System.out.println(question.getQtitle());
-			System.out.println("-------------------------");
-		}
+//		// 질문 제목에 특정 문자가 들어있는 게시글 조회 -> LIKE
+//		List<Questiontbl> likeQuestions = questionRepository.findAllByQtitleLikeOrderByQdateDesc("%질문%");
+//		for(Questiontbl question : likeQuestions ) {;
+//			System.out.println(question.getQnum());
+//			System.out.println(question.getQtitle());
+//			System.out.println("-------------------------");
+//		}
+		
+		
+		// 직접 쓴 SQL문(@Query)으로 조회
+		Questiontbl questionSql = questionRepository.findQuestionByQnum(5L);
+		System.out.println(questionSql.getQnum());
+		System.out.println(questionSql.getQtitle());
+		System.out.println("-------------------------");
 		
 	}
 
