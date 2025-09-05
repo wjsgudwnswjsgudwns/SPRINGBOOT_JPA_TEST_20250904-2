@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jhj.jpatest.dto.QuestionDto;
@@ -149,6 +150,7 @@ public class TestQuestion {
 	@Test
 	@DisplayName("Update문을 JPA 방법으로")
 	@Transactional
+	@Rollback(false) // 실제 DB에도 반영
 	public void updateJpaQuestion() {
 		Optional<Questiontbl> questionOptional = questionRepository.findById(5L);
 		Questiontbl question = questionOptional.get();
