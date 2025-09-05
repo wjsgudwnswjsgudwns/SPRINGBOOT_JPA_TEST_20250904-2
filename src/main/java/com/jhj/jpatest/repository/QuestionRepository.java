@@ -1,6 +1,7 @@
 package com.jhj.jpatest.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,35 @@ public interface QuestionRepository extends JpaRepository<Questiontbl, Long> { /
 	// 질문 제목에 특정 문자가 들어있는 게시글 조회 -> LIKE
 	public List<Questiontbl> findAllByQtitleLikeOrderByQdateDesc(String keyword);
 	
-	// SQL문 직접 쓰기
+	// JPA SQL문 직접 쓰기
 	@Query("SELECT q FROM Questiontbl q WHERE q.qnum= :qnum")
 	public Questiontbl findQuestionByQnum(@Param("qnum") Long qnum);
+	
+	// 질문 제목에 특정 문자가 들어간 JPA SQL문 직접 쓰기
+	@Query("SELECT q FROM Questiontbl q WHERE q.qtitle LIKE %:qtitle%")
+	public Questiontbl findQuestionByQtitle(@Param("qtitle") String qtitle);
+	
+	// 질문글 번호가 특정값보다 큰 질문 번호 호출 JPA SQL문 직접 쓰기
+	@Query("SELECT q FROM Questiontbl q WHERE q.qnum > :number")
+	public Questiontbl findQuestionByQnumber(@Param("number") Long number);
+		
+	// Native SQL문
+	@Query(value = "SELECT * FROM jpaquestiontbl WHERE qnum= :qnum", nativeQuery =  true)
+	public Questiontbl findQuestionNativeByQnum(@Param("qnum") Long qnum);
+	
+	// Qnum이 존재하는 번호면 true 반환
+	public boolean existsByQnum(Long qnum);
+	
+	// 특정값보다 큰 레코드 조회
+	public List<Questiontbl> findByQnumGreaterThanEqual(Long qnum);
+	
+	// 질문 내용 update
+	@Transactional
+	@Modifying
+	@Query("UPDATE Questiontbl q SET q.qcontent= :qcontent WHERE q.qnum= :qnum")
+	public int updateQcontentByQnum(@Param("qcontent") String qcontent, @Param("qnum") Long qnum);
+	
+	@Modifying
+	@Query(value = "UPDATE jpaquestiontbl q SET q.qcontent= :qcontent WHERE q.qnum= :qnum", nativeQuery =  true)
+	public int updateNativeQcontentByQnum(@Param("qcontent") String qcontent, @Param("qnum") Long qnum);
 }

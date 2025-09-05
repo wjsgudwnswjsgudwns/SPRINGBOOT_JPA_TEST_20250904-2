@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jhj.jpatest.dto.QuestionDto;
 import com.jhj.jpatest.entity.Questiontbl;
@@ -76,9 +77,9 @@ public class TestQuestion {
 //		}
 //	}
 	
-	@Test
-	@DisplayName("특정 질문 조회 테스트")
-	public void searchQuestionByField() {
+//	@Test
+//	@DisplayName("특정 질문 조회 테스트")
+//	public void searchQuestionByField() {
 //		Optional<Questiontbl> questionOption = questionRepository.findById(4L); // 기본키로 검색
 //		 
 //		//기본키로 검색 했을 경우 레코드가 1개 또는 존재하지 않는 경우 발생
@@ -116,14 +117,55 @@ public class TestQuestion {
 //		}
 		
 		
-		// 직접 쓴 SQL문(@Query)으로 조회
-		Questiontbl questionSql = questionRepository.findQuestionByQnum(5L);
-		System.out.println(questionSql.getQnum());
-		System.out.println(questionSql.getQtitle());
+//		// 직접 쓴 SQL문(@Query)으로 조회
+//		Questiontbl questionSql = questionRepository.findQuestionByQnum(5L);
+//		System.out.println(questionSql.getQnum());
+//		System.out.println(questionSql.getQtitle());
+//		System.out.println("-------------------------");
+//		
+//	}
+
+//	@Test
+//	@DisplayName("특정 질문 업데이트 테스트")
+//	public void updateQuestion() {
+//		int updateResult = questionRepository.updateQcontentByQnum("질문을 변경하였습니다.", 4L);
+//		
+//		Optional<Questiontbl> questionOptional = questionRepository.findById(4L);
+//		
+//		if(questionOptional.isPresent()) {
+//			Questiontbl question = questionOptional.get();
+//			System.out.println(question.getQnum());
+//			System.out.println(question.getQtitle());
+//			System.out.println(question.getQcontent());
+//		} else {
+//			System.out.println("존재하지 않는 질문입니다.");
+//		}
+//		
+//		questionRepository.findById(4L);
+//		
+//	}
+	
+	
+	@Test
+	@DisplayName("Update문을 JPA 방법으로")
+	@Transactional
+	public void updateJpaQuestion() {
+		Optional<Questiontbl> questionOptional = questionRepository.findById(5L);
+		Questiontbl question = questionOptional.get();
+		System.out.println(question.getQnum());
+		System.out.println(question.getQtitle());
+		System.out.println(question.getQcontent());
+		System.out.println("-------------------------");
+		
+		question.setQcontent("질문 내용이 변경되었습니다.");
+		
+		Optional<Questiontbl> questionOptional2 = questionRepository.findById(5L);
+		Questiontbl question2= questionOptional2.get();
+		System.out.println(question2.getQnum());
+		System.out.println(question2.getQtitle());
+		System.out.println(question2.getQcontent());
 		System.out.println("-------------------------");
 		
 	}
-
-	
 	
 }
